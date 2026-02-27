@@ -1,9 +1,10 @@
-export const analyzePersona = async (data) => {
-  const response = await fetch("http://127.0.0.1:8000/analyze", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
+import axios from "axios";
 
-  return response.json();
-};
+const API = axios.create({
+  baseURL: "http://127.0.0.1:8000",
+});
+
+export const analyzePersona = (data) =>
+  API.post("/analyze", data);
+
+export default API;
