@@ -1,43 +1,51 @@
-from app.utils.text_utils import extract_emails, extract_phones
+import re
 
-def run_rule_engine(text: str):
+def run_rule_engine(data):
+    text = data.bio + " " + " ".join(data.posts)
 
-    breakdown = {
-        "pii_exposure": 0,
-        "professional_exposure": 0,
-        "location_exposure": 0,
-        "routine_exposure": 0
-    }
+    pii_score = 0
+    professional_score = 0
+    location_score = 0
+    routine_score = 0
+    risk_tags = []
 
-    tags = []
+    # Email detection
+    if re.search(r"[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+", text):
+        pii_score += 30
+        risk_tags.append("Public email detected")
 
-    emails = extract_emails(text)
-    phones = extract_phones(text)
+    # Job detection
+    if any(word in text.lower() for word in ["engineer", "developer", "manager", "analyst"]):
+        professional_score += 15
+        risk_tags.append("Job role mentioned")
 
-    if emails:
-        breakdown["pii_exposure"] += 30
-        tags.append("Public email detected")
+    # Travel detection
+    if any(word in text.lower() for word in ["travel", "trip", "goa", "vacation"]):
+        location_score += 15
+        risk_tags.append("Travel plans shared")
 
-    if phones:
-        breakdown["pii_exposure"] += 20
-        tags.append("Phone number detected")
+    # Routine detection
+    if any(word in text.lower() for word in ["every day", "daily", "6am", "gym"]):
+        routine_score += 10
+        risk_tags.append("Routine pattern exposed")
 
-    if "engineer" in text.lower() or "manager" in text.lower():
-        breakdown["professional_exposure"] += 15
-        tags.append("Job role mentioned")
+    total_score = pii_score + professional_score + location_score + routine_score
 
-    if "trip" in text.lower() or "travel" in text.lower():
-        breakdown["location_exposure"] += 15
-        tags.append("Travel plans shared")
-
-    if "every day" in text.lower() or "daily" in text.lower():
-        breakdown["routine_exposure"] += 10
-        tags.append("Routine pattern exposed")
-
-    total = sum(breakdown.values())
+    if total_score > 60:
+        risk_level = "High"
+    elif total_score > 30:
+        risk_level = "Medium"
+    else:
+        risk_level = "Low"
 
     return {
-        "rule_score": total,
-        "breakdown": breakdown,
-        "tags": tags
+        "overall_risk_score": total_score,
+        "risk_level": risk_level,
+        "breakdown": {
+            "pii_exposure": pii_score,
+            "professional_exposure": professional_score,
+            "location_exposure": location_score,
+            "routine_exposure": routine_score,
+        },
+        "risk_tags": risk_tags,
     }

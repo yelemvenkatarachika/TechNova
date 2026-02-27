@@ -1,17 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-# Import schema + orchestrator
-from app.models.schemas import PersonaInput
+from pydantic import BaseModel
 from app.orchestrator import run_hybrid_engine
 
-app = FastAPI(
-    title="PersonaRisk AI - Hybrid Multi-Layer Threat Engine",
-    description="A 3-layer security intelligence system combining Rule-based, NLP, and LLM analysis.",
-    version="1.0.0"
-)
+app = FastAPI()
 
-# CORS configuration for frontend integration
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -19,6 +12,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+class PersonaInput(BaseModel):
+    bio: str
+    posts: list[str]
+
 
 @app.get("/")
 def root():
@@ -29,12 +28,10 @@ def root():
             "Deterministic Risk Engine",
             "NLP Intelligence Layer",
             "LLM Threat Simulation"
-        ]
+        ],
     }
 
+
 @app.post("/analyze")
-def analyze_persona(data: PersonaInput):
-    """
-    Main endpoint that triggers the hybrid analysis flow.
-    """
-    return run_hybrid_engine(data)
+async def analyze_persona(data: PersonaInput):
+    return await run_hybrid_engine(data)

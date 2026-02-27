@@ -1,45 +1,78 @@
-from google import genai
-from app.config import GEMINI_API_KEY
+import ollama
+import json
 
 
-def run_llm_engine(summary_text: str):
-
-    if not GEMINI_API_KEY:
-        return {
-            "simulated_attack": "Gemini API key not configured.",
-            "mitigation_steps": ["Configure GEMINI_API_KEY in .env"]
-        }
-
+async def run_llm_engine(data, risk_score):
     try:
-        client = genai.Client(api_key=GEMINI_API_KEY)
+        # 🔥 Adaptive threat type
+        if risk_score > 60:
+            threat_type = "advanced targeted spear phishing and lateral movement attack"
+        elif risk_score > 30:
+            threat_type = "moderate social engineering attack"
+        else:
+            threat_type = "low-level phishing attempt"
 
-        response = client.models.generate_content(
-            model="gemini-1.5-flash",
-            contents=f"""
-            You are a cybersecurity AI analyst.
+        prompt = f"""
+You are a cybersecurity threat simulation AI.
 
-            Generate:
-            1. A realistic spear-phishing email.
-            2. How attacker exploits the data.
-            3. 3 mitigation steps.
+User Risk Score: {risk_score}
 
-            Data:
-            {summary_text}
-            """
+Simulate a {threat_type} scenario based on:
+
+User Bio:
+{data.bio}
+
+User Posts:
+{" ".join(data.posts)}
+
+Respond ONLY in valid JSON format:
+
+{{
+  "attack_vector": "",
+  "impact": "",
+  "severity": "",
+  "recommendations": ""
+}}
+
+Do not add explanations outside JSON.
+"""
+
+        response = ollama.chat(
+            model="llama3",
+            messages=[{"role": "user", "content": prompt}]
         )
 
+        content = response["message"]["content"]
+
+        try:
+            structured_output = json.loads(content)
+        except:
+            structured_output = {
+                "attack_vector": content,
+                "impact": "Unable to parse structured impact.",
+                "severity": "Unknown",
+                "recommendations": "Review security settings."
+            }
+
+        # 🔥 Align severity with deterministic score
+        if risk_score > 60:
+            structured_output["severity"] = "High"
+        elif risk_score > 30:
+            structured_output["severity"] = "Medium"
+        else:
+            structured_output["severity"] = "Low"
+
         return {
-            "simulated_attack": response.text,
-            "mitigation_steps": [
-                "Enable 2FA",
-                "Avoid sharing routines publicly",
-                "Verify suspicious emails"
-            ]
+            "simulated_attack": structured_output
         }
 
     except Exception as e:
-        print("🚨 GEMINI ERROR:", e)
+        print("🚨 OLLAMA ERROR:", e)
         return {
-            "simulated_attack": "LLM generation failed.",
-            "mitigation_steps": ["Enable 2FA", "Limit public exposure"]
+            "simulated_attack": {
+                "attack_vector": "LLM generation failed.",
+                "impact": "Unavailable",
+                "severity": "Unknown",
+                "recommendations": "Check LLM configuration."
+            }
         }
