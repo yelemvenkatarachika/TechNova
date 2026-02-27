@@ -1,30 +1,83 @@
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import Navbar from "../components/layout/Navbar";
+import Footer from "../components/layout/Footer";
 
-export default function Home() {
+const Home = () => {
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center text-center px-6">
-      
-      <motion.h1
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-5xl font-bold text-white"
+    <>
+      <Navbar />
+
+      <div
+        style={{
+          minHeight: "90vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          textAlign: "center",
+          padding: "40px",
+          position: "relative",
+        }}
       >
-        PersonaRisk AI
-      </motion.h1>
+        {/* Glow Background */}
+        <div
+          style={{
+            position: "absolute",
+            width: "600px",
+            height: "600px",
+            background: "radial-gradient(circle, #00ff9c22 0%, transparent 70%)",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            zIndex: 0,
+          }}
+        />
 
-      <p className="mt-6 text-gray-400 max-w-2xl">
-        AI-powered Social Engineering Risk Intelligence Platform. 
-        Detect exposure. Simulate threats. Strengthen resilience.
-      </p>
+        <div style={{ zIndex: 1 }}>
+          <h1
+            style={{
+              fontSize: "72px",
+              fontWeight: "800",
+              marginBottom: "20px",
+              background: "linear-gradient(90deg, #00ff9c, #ffffff)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            PersonaRisk AI
+          </h1>
 
-      <Link
-        to="/dashboard"
-        className="mt-10 px-8 py-3 bg-primary text-black font-semibold rounded-lg hover:scale-105 transition"
-      >
-        Analyze Profile
-      </Link>
+          <p
+            style={{
+              maxWidth: "750px",
+              fontSize: "20px",
+              color: "#9ca3af",
+              marginBottom: "50px",
+              lineHeight: "1.6",
+            }}
+          >
+            AI-powered Social Engineering Risk Intelligence Platform.
+            Detect exposure. Simulate threats. Strengthen resilience.
+          </p>
 
-    </div>
+          <Link to="/dashboard">
+            <button
+              style={{
+                fontSize: "18px",
+                padding: "18px 42px",
+                borderRadius: "12px",
+                boxShadow: "0 0 25px #00ff9c55",
+              }}
+            >
+              Analyze Profile
+            </button>
+          </Link>
+        </div>
+      </div>
+
+      <Footer />
+    </>
   );
-}
+};
+
+export default Home;

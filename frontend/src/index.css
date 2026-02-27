@@ -1,8 +1,248 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* ===============================
+   PersonaRisk AI - Global Styles
+================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+:root {
+  --bg-primary: #0a0f0d;
+  --bg-secondary: #0f1a17;
+  --accent: #00ff9c;
+  --accent-glow: #00ff9c55;
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 body {
-  background-color: #0b0f19;
-  color: #e5e7eb;
+  font-family: "Inter", sans-serif;
+  background: radial-gradient(circle at top, #0f1a17 0%, #0a0f0d 100%);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+/* ===============================
+   Layout Helpers
+================================ */
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+  padding: 40px 0;
+}
+
+.section {
+  margin-bottom: 60px;
+}
+
+/* ===============================
+   Navbar
+================================ */
+
+.navbar {
+  background: #000;
+  padding: 20px;
+  border-bottom: 1px solid var(--accent-glow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar h1 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+
+.navbar a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  margin-left: 20px;
+  transition: 0.3s;
+}
+
+.navbar a:hover {
+  color: var(--accent);
+}
+
+/* ===============================
+   Glass Cards
+================================ */
+
+.glass-card {
+  background: rgba(15, 26, 23, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--accent-glow);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 0 25px var(--accent-glow);
+  transition: 0.3s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 35px var(--accent);
+}
+
+/* ===============================
+   Inputs
+================================ */
+
+textarea,
+input {
+  width: 100%;
+  padding: 14px;
+  margin-top: 12px;
+  background: #000;
+  color: var(--accent);
+  border: 1px solid var(--accent-glow);
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  transition: 0.3s;
+}
+
+textarea:focus,
+input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+textarea {
+  min-height: 100px;
+  resize: none;
+}
+
+/* ===============================
+   Buttons
+================================ */
+
+button {
+  padding: 14px 28px;
+  margin-top: 20px;
+  background: var(--accent);
+  border: none;
+  border-radius: 10px;
+  color: #000;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  box-shadow: 0 0 20px var(--accent);
+  transform: translateY(-2px);
+}
+
+/* ===============================
+   Dashboard Grid
+================================ */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+/* ===============================
+   Footer
+================================ */
+
+.footer {
+  text-align: center;
+  padding: 30px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--accent-glow);
+  margin-top: 80px;
+}
+
+/* ===============================
+   Headings
+================================ */
+
+h1, h2, h3 {
+  margin-bottom: 15px;
+}
+
+h2 {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ===============================
+   Smooth Animations
+================================ */
+
+.fade-in {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.dashboard-container {
+  padding: 120px 40px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.dashboard-card {
+  background: #0f1a16;
+  padding: 30px;
+  border-radius: 16px;
+  border: 1px solid #00ff9c22;
+  box-shadow: 0 0 30px #00ff9c15;
+  margin-bottom: 40px;
+}
+
+.dashboard-card h2 {
+  margin-bottom: 20px;
+  color: #00ff9c;
+}
+
+.dashboard-card textarea {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 15px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #08110d;
+  border: 1px solid #00ff9c44;
+  color: white;
+}
+
+.dashboard-card button {
+  background: #00ff9c;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
 }
