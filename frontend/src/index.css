@@ -9,6 +9,9 @@
   --bg-secondary: #0f1a17;
   --accent: #00ff9c;
   --accent-glow: #00ff9c55;
+  --danger: #ff3b3b;
+  --warning: #ffb300;
+  --success: #00ff9c;
   --text-primary: #ffffff;
   --text-secondary: #9ca3af;
 }
@@ -24,79 +27,43 @@ body {
   background: radial-gradient(circle at top, #0f1a17 0%, #0a0f0d 100%);
   color: var(--text-primary);
   min-height: 100vh;
+  position: relative;
 }
 
-/* ===============================
-   Layout Helpers
-================================ */
+/* Subtle animated grid */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,255,156,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,156,0.05) 1px, transparent 1px);
+  background-size: 50px 50px;
+  z-index: -1;
+}
 
-.container {
-  width: 90%;
+/* Layout */
+.dashboard-container {
+  padding: 120px 40px;
   max-width: 1200px;
   margin: auto;
-  padding: 40px 0;
 }
 
-.section {
-  margin-bottom: 60px;
-}
-
-/* ===============================
-   Navbar
-================================ */
-
-.navbar {
-  background: #000;
-  padding: 20px;
-  border-bottom: 1px solid var(--accent-glow);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.navbar h1 {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--accent);
-  letter-spacing: 1px;
-}
-
-.navbar a {
-  color: var(--text-secondary);
-  text-decoration: none;
-  margin-left: 20px;
-  transition: 0.3s;
-}
-
-.navbar a:hover {
-  color: var(--accent);
-}
-
-/* ===============================
-   Glass Cards
-================================ */
-
-.glass-card {
+/* Card */
+.dashboard-card,
+.glass-card,
+.simulation-card {
   background: rgba(15, 26, 23, 0.7);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   border: 1px solid var(--accent-glow);
+  border-radius: 20px;
   padding: 30px;
-  border-radius: 16px;
+  margin-bottom: 40px;
   box-shadow: 0 0 25px var(--accent-glow);
-  transition: 0.3s ease;
 }
 
-.glass-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 0 35px var(--accent);
-}
-
-/* ===============================
-   Inputs
-================================ */
-
-textarea,
-input {
+/* Inputs */
+textarea {
   width: 100%;
   padding: 14px;
   margin-top: 12px;
@@ -105,31 +72,20 @@ input {
   border: 1px solid var(--accent-glow);
   border-radius: 10px;
   font-size: 14px;
-  outline: none;
-  transition: 0.3s;
 }
 
-textarea:focus,
-input:focus {
+textarea:focus {
   border-color: var(--accent);
   box-shadow: 0 0 10px var(--accent);
 }
 
-textarea {
-  min-height: 100px;
-  resize: none;
-}
-
-/* ===============================
-   Buttons
-================================ */
-
+/* Button */
 button {
   padding: 14px 28px;
   margin-top: 20px;
   background: var(--accent);
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   color: #000;
   font-weight: 600;
   cursor: pointer;
@@ -141,108 +97,114 @@ button:hover {
   transform: translateY(-2px);
 }
 
-/* ===============================
-   Dashboard Grid
-================================ */
-
-.dashboard-grid {
+/* Results grid */
+.results-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-  gap: 30px;
-  margin-top: 40px;
+  gap: 40px;
 }
 
-/* ===============================
-   Footer
-================================ */
-
-.footer {
+/* Risk Score */
+.risk-score-wrapper {
   text-align: center;
-  padding: 30px;
-  font-size: 14px;
-  color: var(--text-secondary);
-  border-top: 1px solid var(--accent-glow);
-  margin-top: 80px;
+  padding: 40px;
 }
 
-/* ===============================
-   Headings
-================================ */
+.risk-score-value {
+  font-size: 100px;
+  font-weight: 700;
+  margin: 0;
+}
 
-h1, h2, h3 {
+.risk-score-label {
+  font-size: 22px;
+  margin-top: -10px;
+}
+
+/* Severity */
+.severity-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.severity-badge.high {
+  background: var(--danger);
+}
+
+.severity-badge.medium {
+  background: var(--warning);
+}
+
+.severity-badge.low {
+  background: var(--success);
+}
+
+/* Recommendations */
+.recommendations-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.recommendations-section li {
   margin-bottom: 15px;
+  padding: 12px;
+  background: #0c1512;
+  border-radius: 10px;
+  border-left: 4px solid var(--accent);
+}
+/* Simulation Card Improvements */
+
+.simulation-card {
+  padding: 40px;
+  border-radius: 20px;
 }
 
-h2 {
-  font-weight: 600;
-  color: var(--accent);
+.simulation-section {
+  margin-bottom: 30px;
 }
 
-p {
-  color: var(--text-secondary);
+.simulation-block {
+  margin-bottom: 25px;
+}
+
+.simulation-block p {
+  margin-top: 8px;
+  color: #cbd5e1;
   line-height: 1.6;
 }
 
-/* ===============================
-   Smooth Animations
-================================ */
-
-.fade-in {
-  animation: fadeIn 0.8s ease forwards;
+.severity-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  margin-left: 10px;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.dashboard-container {
-  padding: 120px 40px;
-  max-width: 1200px;
-  margin: auto;
+.severity-badge.low {
+  background: #22c55e33;
+  color: #22c55e;
 }
 
-.dashboard-card {
-  background: #0f1a16;
-  padding: 30px;
-  border-radius: 16px;
-  border: 1px solid #00ff9c22;
-  box-shadow: 0 0 30px #00ff9c15;
-  margin-bottom: 40px;
+.severity-badge.medium {
+  background: #f59e0b33;
+  color: #f59e0b;
 }
 
-.dashboard-card h2 {
-  margin-bottom: 20px;
-  color: #00ff9c;
+.severity-badge.high {
+  background: #ef444433;
+  color: #ef4444;
 }
 
-.dashboard-card textarea {
-  width: 100%;
-  height: 100px;
-  margin-bottom: 15px;
-  padding: 12px;
-  border-radius: 8px;
-  background: #08110d;
-  border: 1px solid #00ff9c44;
-  color: white;
+.recommendations-section {
+  margin-top: 30px;
 }
 
-.dashboard-card button {
-  background: #00ff9c;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-}
-
-.results-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 30px;
+.recommendation-item {
+  background: rgba(0, 255, 156, 0.08);
+  padding: 14px 18px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  border-left: 4px solid #00ff9c;
 }
